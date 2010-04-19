@@ -1,0 +1,8 @@
+%ul
+  - @names.each do |name|
+    %li
+      = name
+      %form{:action => "/users", :method => "post"}
+        %input{:type => "hidden", :name => "_method", :value => "delete"}
+        %input{:type => "hidden", :name => "name", :value => name}
+        %input{:type => "submit", :value => "delete"}
