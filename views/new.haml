@@ -1,4 +1,11 @@
-%form{:action => "/users", :method => "post"}
+%form#newuser{:action => "/users", :method => "post"}
+  %label{:for => 'name'} Name:
   %input{:type => "text", :name => "name"}
+  %br
+  %label{:for => 'password'} Password:
   %input{:type => "password", :name => "password"}
+  %br
+  %label{:for => 'password_confirmation'} Password Confirmation:
+  %input{:type => "password", :name => "password_confirmation"}
+  %br
   %input{:type => "submit", :value => "Create"}

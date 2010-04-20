@@ -10,7 +10,15 @@ Pericles.configure({
   :user_data_dir => File.join(File.dirname(__FILE__), 'vsftp', 'user_data')
 })
 
+use Rack::Auth::Basic do |username, password|
+  [username, password] == ['ftpadmin', 'ASfeir234234sawFwasdf']
+end
+
 get '/' do
+  redirect '/users'
+end
+
+get '/users' do
   @names = Pericles.names
   haml :index
 end
@@ -20,12 +28,12 @@ get '/users/new' do
 end
 
 post '/users' do
-  if Pericles.names.include?(params[:name])
-    error 400, "User already exists"
+  if Pericles.names.include?(params[:name]) || !Pericles.valid_name?(params[:name]) || !Pericles.valid_password?(params[:password])
+    haml :error
   else
     Pericles.add(params[:name], params[:password])
+    redirect '/'
   end
-  redirect '/'
 end
 
 delete '/users' do

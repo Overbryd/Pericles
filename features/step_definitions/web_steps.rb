@@ -1,3 +1,7 @@
+Before('@authenticated') do
+  basic_auth('ftpadmin', 'ASfeir234234sawFwasdf')
+end
+
 When /^I visit "([^\"]*)"$/ do |path|
   visit path
 end

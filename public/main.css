@@ -1,0 +1,52 @@
+body {
+  font-family: Arial;
+  font-size: 14pt;
+  margin: 0; padding: 0;
+}
+
+#header {
+  background: #3C1A19;
+  border-bottom: 3px solid #E9CC6B;
+  padding: 8px 20px 5px 20px;
+  color: grey;
+}
+
+#header a {
+  color: white;
+}
+
+#container {
+  background: #967C47;
+  border-bottom: 3px solid #F5E8B2;
+  color: white;
+  padding: 8px 20px 5px 20px;
+}
+
+form#newuser {
+  margin: 0; padding: 0;
+}
+
+form#newuser label {
+  display:block;
+}
+
+ul#users {
+  list-style: none;
+  margin: 0; padding: 0;
+}
+
+ul#users li {
+  padding:8px 0 5px 0;
+  color: white;
+}
+
+ul#users form {
+  display:inline;
+  visibility:hidden;
+}
+ul#users li:hover form {
+  visibility:visible;
+}
+ul#users input[type=submit]:hover {
+  cursor:pointer;
+}

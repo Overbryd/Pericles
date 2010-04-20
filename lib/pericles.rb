@@ -26,22 +26,28 @@ class Pericles
     end
   
     def add(name, password)
-      htpasswd "-b #{pwdfile} #{name} #{password}"
+      htpasswd "-b", pwdfile, name, password
       FileUtils.mkdir_p user_data_dir(name)
       FileUtils.touch user_config(name)
     end
     
     def destroy(name)
-      htpasswd "-D #{pwdfile} #{name}"
-      FileUtils.rm_r user_data_dir(name)
+      htpasswd "-D", pwdfile, name
       File.delete user_config(name)
+    end
+    
+    def valid_name?(name)
+      !(name.strip.empty? || name =~ /[^A-Za-z0-9_]/)
+    end
+    
+    def valid_password?(password)
+      !(password.length < 6)
     end
     
     private
     
-    def htpasswd(cmd)
-      output = `htpasswd #{cmd} 2>&1`
-      raise "htpasswd: #{output}" unless $?.success?
+    def htpasswd(*args)
+      raise "htpasswd failed" unless system('htpasswd', *args)
     end
   end
 end

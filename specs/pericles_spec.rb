@@ -27,6 +27,11 @@ describe Pericles do
     it "should create an empty user specific configuration file" do
       File.exist?(Pericles.user_config('john')).should be_true
     end
+    
+    it "should escape crazy input" do
+      Pericles.add('johnny', %q{!&'"`$0 |()<>})
+      Pericles.names.should include('johnny')
+    end
   end
   
   describe "destroy" do
@@ -39,14 +44,26 @@ describe Pericles do
       File.read(Pericles.pwdfile).should_not include('john')
     end
     
-    it "should recursively delete the users directory" do
-      Pericles.destroy('john')
-      File.directory?(Pericles.user_data_dir('john')).should be_false
-    end
-    
     it "should delete the user configuration file" do
       Pericles.destroy('john')
       File.exist?(Pericles.user_config('john')).should be_false
+    end
+  end
+  
+  describe "validation" do
+    it "should have valid name" do
+      Pericles.valid_name?('').should be_false
+      Pericles.valid_name?(' ').should be_false
+      Pericles.valid_name?('%\#$!@#4').should be_false
+      Pericles.valid_name?('peterjohn').should be_true
+    end
+    
+    it "should have valid password" do
+      Pericles.valid_password?('').should be_false
+      Pericles.valid_password?(' ').should be_false
+      Pericles.valid_password?('peter').should be_false
+      Pericles.valid_password?('%\#$!@#4').should be_true
+      Pericles.valid_password?('peterjohn').should be_true
     end
   end
 end
