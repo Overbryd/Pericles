@@ -28,6 +28,7 @@ class Pericles
     def add(name, password)
       htpasswd "-b", pwdfile, name, password
       FileUtils.mkdir_p user_data_dir(name)
+      FileUtils.chown config.vsftp_uid.to_s, config.vsftp_gid.to_s, user_data_dir(name)
       FileUtils.touch user_config(name)
     end
     

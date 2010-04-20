@@ -11,24 +11,23 @@ describe Pericles do
       :vsftp_gid => Process.gid
     })
     FileUtils.mkdir Pericles.config.user_config_dir
+    FileUtils.stub(:chown)
   end
   
   describe "add" do
-    before :each do
-      Pericles.add('john', 'smith')
-    end
-    
     it "should add an entry to the pwdfile" do
+      Pericles.add('john', 'smith')
       File.read(Pericles.pwdfile).should match(/john:(.*)/)
     end
     
     it "should create a separate directory for the new user" do
+      FileUtils.should_receive(:chown).with(Pericles.config.vsftp_uid.to_s, Pericles.config.vsftp_gid.to_s, Pericles.user_data_dir('john'))
+      Pericles.add('john', 'smith')
       File.directory?(Pericles.user_data_dir('john')).should be_true
-      File.stat(Pericles.user_data_dir('john')).uid.should eql(Pericles.config.vsftp_uid)
-      File.stat(Pericles.user_data_dir('john')).gid.should eql(Pericles.config.vsftp_gid)
     end
     
     it "should create an empty user specific configuration file" do
+      Pericles.add('john', 'smith')
       File.exist?(Pericles.user_config('john')).should be_true
     end
     
