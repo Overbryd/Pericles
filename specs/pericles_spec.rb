@@ -6,7 +6,9 @@ describe Pericles do
     Pericles.configure({
       :pwdfile => File.join(tmpdir, 'pwdfile'),
       :user_config_dir => File.join(tmpdir, 'user_configurations'),
-      :user_data_dir => File.join(tmpdir, 'user_data')
+      :user_data_dir => File.join(tmpdir, 'user_data'),
+      :vsftp_uid => Process.uid,
+      :vsftp_gid => Process.gid
     })
     FileUtils.mkdir Pericles.config.user_config_dir
   end
@@ -20,8 +22,10 @@ describe Pericles do
       File.read(Pericles.pwdfile).should match(/john:(.*)/)
     end
     
-    it "should create a separate directory for new user" do
+    it "should create a separate directory for the new user" do
       File.directory?(Pericles.user_data_dir('john')).should be_true
+      File.stat(Pericles.user_data_dir('john')).uid.should eql(Pericles.config.vsftp_uid)
+      File.stat(Pericles.user_data_dir('john')).gid.should eql(Pericles.config.vsftp_gid)
     end
     
     it "should create an empty user specific configuration file" do

@@ -24,3 +24,17 @@ class MyWorld
 end
 
 World{MyWorld.new}
+
+root = File.join(Dir.tmpdir, rand(Time.now.to_i).to_f.to_s, 'pericles_cucumber_test')
+FileUtils.mkdir_p File.join(root, 'user_configurations')
+FileUtils.mkdir File.join(root, 'user_data')
+Pericles.configure({
+  :pwdfile => File.join(root, 'pwdfile'),
+  :user_config_dir => File.join(root, 'user_configurations'),
+  :user_data_dir => File.join(root, 'user_data'),
+  :vsftp_uid => Process.uid,
+  :vsftp_gid => Process.gid
+})
+at_exit do
+  FileUtils.rm_r(root)
+end

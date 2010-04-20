@@ -5,9 +5,11 @@ require 'haml'
 require 'lib/pericles'
 
 Pericles.configure({
-  :pwdfile => File.join(File.dirname(__FILE__), 'vsftp', 'pwdfile'),
-  :user_config_dir => File.join(File.dirname(__FILE__), 'vsftp', 'user_configurations'),
-  :user_data_dir => File.join(File.dirname(__FILE__), 'vsftp', 'user_data')
+  :pwdfile => '/etc/vsftpd/pwdfile',
+  :user_config_dir => '/etc/vsftpd/users',
+  :user_data_dir => '/home/vsftpd',
+  :vsftp_uid => 251,
+  :vsftp_gid => 251
 })
 
 use Rack::Auth::Basic do |username, password|

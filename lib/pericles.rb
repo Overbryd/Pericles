@@ -1,7 +1,7 @@
 class Pericles
   class << self
     def configure(configuration)
-      @config ||= OpenStruct.new(configuration)
+      @config = OpenStruct.new(configuration)
     end
     
     def config
